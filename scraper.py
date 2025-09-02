@@ -93,9 +93,9 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
             # Section
             sm = re.search(section_pattern, text)
             if sm and sm.group(1) and sm.group(1).strip():
-            section = sm.group(1).strip()
+                section = sm.group(1).strip()
             else:
-            section = "Verwaltungskommission"
+                section = "Verwaltungskommission"
 
             # Weight
             wm = re.search(weight_pattern, text)
@@ -274,5 +274,6 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
