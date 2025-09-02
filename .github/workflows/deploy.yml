@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run scraper
-      run: Working scraper with html.py
+      run: python scraper.py
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
