@@ -15,7 +15,7 @@ judge_block_pattern = r"(?:Verwaltungsrichter(?:in)?|Abteilungspräsident(?:in)?
 clerk_pattern = r"Gerichtsschreiber(?:in)?\s+([A-ZÄÖÜ][^.]+)\."
 decision_pattern = r"\b[A-Z]{2}\.\d{4}\.\d{5}\b"
 decision_date_pattern = r"vom\s+(.+?)\s+Spruchkörper"
-section_pattern = r"Spruchkörper:\s*(.*?)(?=\s*Weiterzug:|$)"
+ssection_pattern = r"Spruchkörper:\s*(.*?)(?=\s*/|\s*Weiterzug:|$)"
 weight_pattern = r"Gewichtung:\s*([1-5])"
 rechtsgebiet_pattern = r"Rechtsgebiet:\s*(.+?)\s*Betreff"
 betreff_pattern = r", betreffend\s+(.+?),\s+hat sich ergeben"
@@ -274,6 +274,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
