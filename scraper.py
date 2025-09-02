@@ -15,7 +15,7 @@ judge_block_pattern = r"(?:Verwaltungsrichter(?:in)?|Abteilungspräsident(?:in)?
 clerk_pattern = r"Gerichtsschreiber(?:in)?\s+([A-ZÄÖÜ][^.]+)\."
 decision_pattern = r"\b[A-Z]{2}\.\d{4}\.\d{5}\b"
 decision_date_pattern = r"vom\s+(.+?)\s+Spruchkörper"
-section_pattern = r"Spruchkörper:\s*([^\s/][^/]+)?"
+section_pattern = r"Spruchkörper:\s*(.*?)(?=\s*Weiterzug:|$)"
 weight_pattern = r"Gewichtung:\s*([1-5])"
 rechtsgebiet_pattern = r"Rechtsgebiet:\s*(.+?)\s*Betreff"
 betreff_pattern = r", betreffend\s+(.+?),\s+hat sich ergeben"
@@ -92,7 +92,10 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
 
             # Section
             sm = re.search(section_pattern, text)
-            section = sm.group(1).strip() if (sm and sm.group(1)) else None
+            if sm and sm.group(1) and sm.group(1).strip():
+            section = sm.group(1).strip()
+            else:
+            section = "Verwaltungskommission"
 
             # Weight
             wm = re.search(weight_pattern, text)
@@ -271,4 +274,5 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
