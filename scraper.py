@@ -4,6 +4,7 @@ import html
 from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
+import pytz
 
 # -------- Settings --------
 BASE_URL = "https://vgrzh.djiktzh.ch"
@@ -167,7 +168,8 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
 
 def build_html(days_data):
     """days_data = list of tuples (pub_date_str, rows:list[dict])"""
-    now = datetime.now().strftime("%d.%m.%Y %H:%M")
+    tz = pytz.timezone("Europe/Zurich")
+    now = datetime.now(tz).strftime("%d.%m.%Y %H:%M")
     parts = []
     parts.append("""<!doctype html>
 <html lang="de">
@@ -274,6 +276,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
