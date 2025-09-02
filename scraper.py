@@ -269,3 +269,6 @@ if __name__ == "__main__":
 
     out_path = build_html(days)
     print(f"✅ HTML erstellt: {out_path}")
+
+OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
