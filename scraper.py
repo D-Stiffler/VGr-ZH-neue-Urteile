@@ -256,7 +256,7 @@ function filterTable(dayId){
         parts.append("</tbody></table></section>")
 
     parts.append("""</div>
-<footer>© Verwaltungsgericht Zürich – inoffizielle Übersicht (Scraper-Ausgabe)</footer>
+<footer>Die vorliegende Website ist ein privates Projekt und wird nicht vom Verwaltungsgericht Zürich geführt.</footer>
 </body>
 </html>""")
 
@@ -276,6 +276,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
