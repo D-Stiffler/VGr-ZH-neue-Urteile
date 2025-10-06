@@ -53,7 +53,7 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
         "dErstPublikationsdatumBis": "",
         "cSuchstringZiel": "F37_HTML",
         "cSuchstring": "",
-        "nAnzahlTrefferProSeite": "30",
+        "nAnzahlTrefferProSeite": "50",
         "nSeite": "1"
     }
 
@@ -276,6 +276,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
