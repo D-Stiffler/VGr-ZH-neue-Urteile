@@ -122,9 +122,9 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
             result = None
             if disp:
                 dtext = re.sub(r"\s+", " ", disp.group(2)).strip()
-                if re.search(r"teilweise gutgeheissen", dtext, re.IGNORECASE):
+                if re.search(r"teilweise gutgeheissen|In teilweiser Gutheissung", dtext, re.IGNORECASE):
                     result = "Teilweise Gutheissung"
-                elif re.search(r"gutgeheissen", dtext, re.IGNORECASE):
+                elif re.search(r"gutgeheissen|In Gutheissung", dtext, re.IGNORECASE):
                     result = "Gutheissung"
                 elif re.search(r"abgewiesen", dtext, re.IGNORECASE):
                     result = "Abweisung"
@@ -276,6 +276,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
