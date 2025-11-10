@@ -218,18 +218,31 @@ function sortTable(tableId, colIndex) {
   const table = document.getElementById(tableId);
   const tbody = table.querySelector("tbody");
   const rows = Array.from(tbody.querySelectorAll("tr"));
-  const isNumeric = rows.every(tr => !isNaN(parseFloat(tr.children[colIndex].innerText.trim())));
   const currentDir = table.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
   table.setAttribute("data-sort-dir", currentDir);
 
   rows.sort((a, b) => {
     const A = a.children[colIndex].innerText.trim();
     const B = b.children[colIndex].innerText.trim();
+
+    // Check if column is "Entscheiddatum" by index
+    if (table.querySelectorAll("th")[colIndex].innerText.includes("Entscheiddatum")) {
+      // Parse DD.MM.YYYY into Date
+      const parseDate = str => {
+        const [d, m, y] = str.split(".").map(Number);
+        return new Date(y, m - 1, d);
+      };
+      return currentDir === "asc" ? parseDate(A) - parseDate(B) : parseDate(B) - parseDate(A);
+    }
+
+    // Numeric sort if possible
+    const isNumeric = !isNaN(parseFloat(A)) && !isNaN(parseFloat(B));
     if (isNumeric) {
       return currentDir === "asc" ? A - B : B - A;
-    } else {
-      return currentDir === "asc" ? A.localeCompare(B, 'de') : B.localeCompare(A, 'de');
     }
+
+    // Fallback: string sort
+    return currentDir === "asc" ? A.localeCompare(B, 'de') : B.localeCompare(A, 'de');
   });
 
   tbody.innerHTML = "";
@@ -301,6 +314,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
