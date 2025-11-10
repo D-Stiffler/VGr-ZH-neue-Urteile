@@ -221,18 +221,30 @@ function sortTable(tableId, colIndex) {
   const currentDir = table.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
   table.setAttribute("data-sort-dir", currentDir);
 
-  rows.sort((a, b) => {
+   rows.sort((a, b) => {
     const A = a.children[colIndex].innerText.trim();
     const B = b.children[colIndex].innerText.trim();
 
-    // Check if column is "Entscheiddatum" by index
-    if (table.querySelectorAll("th")[colIndex].innerText.includes("Entscheiddatum")) {
-      // Parse DD.MM.YYYY into Date
+    const headerText = table.querySelectorAll("th")[colIndex].innerText;
+
+    // 1️⃣ Custom sort for "Entscheiddatum" column
+    if (headerText.includes("Entscheiddatum")) {
       const parseDate = str => {
         const [d, m, y] = str.split(".").map(Number);
         return new Date(y, m - 1, d);
       };
       return currentDir === "asc" ? parseDate(A) - parseDate(B) : parseDate(B) - parseDate(A);
+    }
+
+    // 2️⃣ Custom sort for "Abteilung" column
+    if (headerText.includes("Abteilung")) {
+      const parseAbteilung = str => {
+        const num = parseInt(str); // extract leading number
+        return isNaN(num) ? 999 : num; // Verwaltungskommission gets high number
+      };
+      const valA = parseAbteilung(A);
+      const valB = parseAbteilung(B);
+      return currentDir === "asc" ? valA - valB : valB - valA;
     }
 
     // Numeric sort if possible
@@ -314,6 +326,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
