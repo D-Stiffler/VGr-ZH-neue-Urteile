@@ -212,6 +212,30 @@ function filterTable(dayId){
   });
 }
 </script>
+<script>
+// Simple table sort by column
+function sortTable(tableId, colIndex) {
+  const table = document.getElementById(tableId);
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const isNumeric = rows.every(tr => !isNaN(parseFloat(tr.children[colIndex].innerText.trim())));
+  const currentDir = table.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
+  table.setAttribute("data-sort-dir", currentDir);
+
+  rows.sort((a, b) => {
+    const A = a.children[colIndex].innerText.trim();
+    const B = b.children[colIndex].innerText.trim();
+    if (isNumeric) {
+      return currentDir === "asc" ? A - B : B - A;
+    } else {
+      return currentDir === "asc" ? A.localeCompare(B, 'de') : B.localeCompare(A, 'de');
+    }
+  });
+
+  tbody.innerHTML = "";
+  rows.forEach(r => tbody.appendChild(r));
+}
+</script>
 </head>
 <body>
 <header>
@@ -232,7 +256,7 @@ function filterTable(dayId){
         parts.append(f'<table id="tbl_{idx}"><thead><tr>')
         headers = ["Verfahrensnummer","Entscheiddatum","Abteilung","Rechtsgebiet","Betreff","Ausgang","Gewichtung","Länge (Wörter)","Richter:innen","Gerichtsschreiber:in", "Minderheitsvotum", "Link"]
         for h in headers:
-            parts.append(f"<th>{html.escape(h)}</th>")
+            parts.append(f"<th onclick=\"sortTable('tbl_{idx}', {headers.index(h)})\" style='cursor:pointer'>{html.escape(h)} ▲▼</th>")
         parts.append("</tr></thead><tbody>")
 
         for r in rows:
@@ -277,6 +301,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
