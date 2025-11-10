@@ -14,7 +14,7 @@ OUTPUT_HTML = "index.html"  # saved into the current folder (your PyCharm projec
 # -------- Regex patterns (same as your script) --------
 judge_block_pattern = r"(?:Verwaltungsrichter(?:in)?|Abteilungspräsident(?:in)?|Gerichtspräsident(?:in)?)[\s\S]+?(?=Gerichtsschreiber)"
 clerk_pattern = r"Gerichtsschreiber(?:in)?\s+([A-ZÄÖÜ][^.]+)\."
-decision_pattern = r"Geschäftsnummer:\s*([A-Z]{2}\.\d{4}\.\d{5})"
+decision_pattern = r"\b[A-Z]{2,3}\.\d{4}\.\d{5}\b"
 decision_date_pattern = r"vom\s+(.+?)\s+Spruchkörper"
 section_pattern = r"Spruchkörper:\s*(.*?)(?=\s*/|\s*Weiterzug:|$)"
 weight_pattern = r"Gewichtung:\s*([1-5])"
@@ -85,7 +85,7 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
 
             # Decision number
             dm = re.search(decision_pattern, text)
-            decision_number = dm.group(1).strip() if dm else None
+            decision_number = dm.group(0) if dm else None
 
             # Decision date
             ddm = re.search(decision_date_pattern, text)
@@ -276,6 +276,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
