@@ -76,6 +76,7 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
             jb = re.search(judge_block_pattern, text)
             if jb:
                 raw = jb.group(0)
+                raw = re.sub(r"Mitwirkend:\s*", "", raw)
                 raw = re.sub(r"(Verwaltungsrichter(?:in)?|Abteilungspräsident(?:in)?|Gerichtspräsident(?:in)?)", "", raw)
                 judges = [j.strip() for j in re.split(r",| und ", raw) if j.strip()]
 
@@ -276,6 +277,7 @@ if __name__ == "__main__":
     print(f"✅ HTML erstellt: {out_path}")
 
 OUTPUT_HTML = os.path.join(os.getcwd(), "index.html")
+
 
 
 
