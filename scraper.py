@@ -123,14 +123,14 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
             result = None
             if disp:
                 dtext = re.sub(r"\s+", " ", disp.group(2)).strip()
-                if re.search(r"teilweise gutgeheissen|In teilweiser Gutheissung", dtext, re.IGNORECASE):
+                if re.search(r"gegenstandslos", dtext, re.IGNORECASE):
+                    result = "Abschreibung als gegenstandslos"
+                elif re.search(r"teilweise gutgeheissen|In teilweiser Gutheissung", dtext, re.IGNORECASE):
                     result = "Teilweise Gutheissung"
                 elif re.search(r"gutgeheissen|In Gutheissung", dtext, re.IGNORECASE):
                     result = "Gutheissung"
-                elif re.search(r"abgewiesen", dtext, re.IGNORECASE):
+                elif re.search(r"abgewiesen|In Abweisung", dtext, re.IGNORECASE):
                     result = "Abweisung"
-                elif re.search(r"gegenstandslos", dtext, re.IGNORECASE):
-                    result = "Abschreibung als gegenstandslos"
                 elif re.search(r"nicht eingetreten", dtext, re.IGNORECASE):
                     result = "Nichteintreten"
 
