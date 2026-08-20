@@ -119,20 +119,29 @@ def scrape_for_date(pub_date_ddmmyyyy: str):
                 decision_length = int(len(decision_text.split()))
 
             # Result
-            disp = re.search(dispositiv_pattern, text, flags=re.IGNORECASE | re.DOTALL)
-            result = None
-            if disp:
-                dtext = re.sub(r"\s+", " ", disp.group(2)).strip()
-                if re.search(r"gegenstandslos", dtext, re.IGNORECASE):
-                    result = "Abschreibung als gegenstandslos"
-                elif re.search(r"teilweise gutgeheissen|In teilweiser Gutheissung", dtext, re.IGNORECASE):
-                    result = "Teilweise Gutheissung"
-                elif re.search(r"gutgeheissen|In Gutheissung", dtext, re.IGNORECASE):
-                    result = "Gutheissung"
-                elif re.search(r"abgewiesen|In Abweisung", dtext, re.IGNORECASE):
-                    result = "Abweisung"
-                elif re.search(r"nicht eingetreten", dtext, re.IGNORECASE):
-                    result = "Nichteintreten"
+disp = re.search(dispositiv_pattern, text, flags=re.IGNORECASE | re.DOTALL)
+result = None
+
+if disp:
+    dtext = re.sub(r"\s+", " ", disp.group(2)).strip()
+
+    result_patterns = [
+        (r"gegenstandslos", "Abschreibung als gegenstandslos"),
+        (r"teilweise gutgeheissen|In teilweiser Gutheissung", "Teilweise Gutheissung"),
+        (r"gutgeheissen|In Gutheissung", "Gutheissung"),
+        (r"abgewiesen|In Abweisung", "Abweisung"),
+        (r"nicht eingetreten", "Nichteintreten"),
+    ]
+
+    matches = []
+
+    for pattern, label in result_patterns:
+        match = re.search(pattern, dtext, flags=re.IGNORECASE)
+        if match:
+            matches.append((match.start(), label))
+
+    if matches:
+        result = min(matches, key=lambda x: x[0])[1]
 
             # Dissenting Opinion Check
             dissenting_opinion = ""
